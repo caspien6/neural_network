@@ -5,7 +5,7 @@ public class MyMatrix {
 	public int RowCount;
 	public int ColumnCount;
 	public double[][] tarolo;
-
+	
 	public MyMatrix(int R, int C) {
 		RowCount = R;
 		ColumnCount = C;
