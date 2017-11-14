@@ -7,6 +7,7 @@ import java.util.Random;
 public class Layer {
 	public static int indexer = 0;
 	public int index;
+	public boolean isOutput,isInput;
 	
 	public Layer before, after;
 	public ArrayList<Neuron> neurons;
@@ -14,6 +15,8 @@ public class Layer {
 	private MyMatrix inputs;//only for the first
 	
 	public Layer(int NeuronCount) {
+		isOutput = false;
+		isInput = false;
 		index=indexer;
 		++indexer;
 		neurons = new ArrayList<Neuron>();
@@ -24,6 +27,8 @@ public class Layer {
 	
 	
 	public Layer(int NeuronCount, MyMatrix biases) {
+		isOutput = false;
+		isInput = false;
 		index=indexer;
 		++indexer;
 		neurons = new ArrayList<Neuron>(NeuronCount);
@@ -35,13 +40,17 @@ public class Layer {
 	}
 	
 	public void initWeights(int previousNeuronCount) {
-		weights = new MyMatrix(neurons.size(),  previousNeuronCount);
+		weights = new MyMatrix( neurons.size(), previousNeuronCount);
 		Random r = new Random();
 		for (int i = 0; i < weights.RowCount; i++) {
 			for (int j = 0; j < weights.ColumnCount; j++) {
 				weights.tarolo[i][j] = r.nextGaussian()*0.1;
 			}
 		}
+	}
+	
+	public void initWeights(MyMatrix m) {
+		weights = m;
 	}
 	
 	public void printWeightsAndBiases() {
@@ -58,7 +67,7 @@ public class Layer {
 		MyMatrix output;
 		MyMatrix biases = new MyMatrix(neurons.size(), 1);
 		MyMatrix inp;
-		if (index == 1) {
+		if (before.isInput) {
 			inp = before.getInputs();
 		}
 		else
@@ -68,10 +77,13 @@ public class Layer {
 		
 		for (int i = 0; i < neurons.size(); i++) {
 			biases.tarolo[i][0] = neurons.get(i).bias;
+			
 		}
 		
+		
 		output = biases.plus(weights.times(inp));
-		if (index == indexer-1)
+		
+		if (isOutput)
 			return output;
 		return f(output);
 		
@@ -80,11 +92,14 @@ public class Layer {
 	private MyMatrix f(MyMatrix target) {
 		for (int i = 0; i < target.RowCount; i++) {
 			//ReLu
-			double ertek = target.tarolo[i][0];
-			if (ertek > 0) 
-				target.tarolo[i][0] = ertek;
-			else 
-				target.tarolo[i][0] = 0;
+			for (int j = 0; j < target.ColumnCount; j++) {
+				double ertek = target.tarolo[i][j];
+				if (ertek > 0) 
+					target.tarolo[i][j] = ertek;
+				else 
+					target.tarolo[i][j] = 0;
+			}
+			
 		}
 		return target;
 	}

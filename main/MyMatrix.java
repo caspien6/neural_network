@@ -12,7 +12,7 @@ public class MyMatrix {
 		tarolo = new double[R][C];
 		for(int i = 0; i < RowCount; ++i) {
 			for (int j = 0; j < ColumnCount; j++) {
-				tarolo[i][j] = 1;
+				tarolo[i][j] = 0;
 			}
 		}
 	}

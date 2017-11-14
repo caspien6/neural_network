@@ -32,6 +32,7 @@ public class Structure {
 		}
 	}
 	
+	
 	public void printData() {
 		for (int i = 0; i < layers.size(); i++) {
 			if (i == layers.size()-1) {
@@ -59,7 +60,7 @@ public class Structure {
 	}
 	
 	public MyMatrix getOutput() {
-		return f(layers.get(layers.size()-1).getOutputMatrix());
+		return layers.get(layers.size()-1).getOutputMatrix();
 	}
 	
 	private MyMatrix f(MyMatrix target) {
