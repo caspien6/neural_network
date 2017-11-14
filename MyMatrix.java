@@ -20,7 +20,7 @@ public class MyMatrix {
 	
     public MyMatrix times(MyMatrix B) {
     	MyMatrix A = this;
-        if (A.ColumnCount != B.RowCount) throw new RuntimeException("Illegal matrix dimensions.");
+        if (A.ColumnCount != B.RowCount) throw new RuntimeException("Illegal matrix dimensions." + A.ColumnCount+ ", " + B.RowCount);
         
         MyMatrix C = new MyMatrix(A.RowCount, B.ColumnCount);
         for (int i = 0; i < C.RowCount; i++)
