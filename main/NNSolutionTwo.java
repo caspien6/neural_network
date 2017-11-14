@@ -41,13 +41,13 @@ public class NNSolutionTwo {
 		Structure st = new Structure(layers);
 		int input_size = Integer.parseInt(sc.nextLine());
 		
-		
+		MyMatrix inputs;
 		ArrayList<MyMatrix> outputs = new ArrayList<MyMatrix>();
 		for (int i = 0; i < input_size; i++) {
 			String[] inpstr = sc.nextLine().split(",");
-			MyMatrix inputs = new MyMatrix(inpstr.length,1);
+			inputs = new MyMatrix(inpstr.length,1);
 			for (int j = 0; j < inpstr.length; j++) {
-				inputs.tarolo[j][0] = 0;
+				inputs.tarolo[j][0] = Double.parseDouble(inpstr[j]);
 			}
 			st.setInputs(inputs);
 			outputs.add(st.getOutput());

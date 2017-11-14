@@ -79,7 +79,9 @@ public class Layer {
 			biases.tarolo[i][0] = neurons.get(i).bias;
 			
 		}
-		
+		//inp.show();
+		//weights.show();
+		//biases.show();
 		
 		output = biases.plus(weights.times(inp));
 		
