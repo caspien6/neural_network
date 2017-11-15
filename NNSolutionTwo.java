@@ -11,7 +11,7 @@ public class NNSolutionTwo {
 		ArrayList<Layer> layers = new ArrayList<Layer>();
 
 		String dimension = sc.nextLine();
-		
+		//struktura beolvasása
 		String[] tmp = dimension.split(",");
 		ArrayList<Integer> lay_neurons = new ArrayList<Integer>();
 		for (int i = 0; i < tmp.length; i++) {
@@ -21,7 +21,7 @@ public class NNSolutionTwo {
 			else if(i == tmp.length-1) l.isOutput = true;
 			layers.add(l);
 		}
-		
+		//Neuron adatok beolvasása soronkent
 		for (int i = 1; i < lay_neurons.size(); i++) {
 			MyMatrix layer_weights = new MyMatrix(lay_neurons.get(i), lay_neurons.get(i-1));
 			for (int j = 0; j < lay_neurons.get(i); j++) {
@@ -38,6 +38,7 @@ public class NNSolutionTwo {
 			}
 			layers.get(i).initWeights(layer_weights);
 		}
+		
 		Structure st = new Structure(layers);
 		int input_size = Integer.parseInt(sc.nextLine());
 		

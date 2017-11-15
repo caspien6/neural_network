@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Structure {
 	ArrayList<Layer> layers;
-	MyMatrix inputs;
+	MyMatrix inputs, expected_outputs;
 	
 	public Structure(ArrayList<Layer> l) {
 		for (int i = 0; i < l.size(); i++) {
@@ -50,24 +50,26 @@ public class Structure {
 		
 	}
 	
+	public DerivateSolution get_layout_derivates(int index) {
+		return layers.get(index).getDerivates();
+	}
+	
 	public void setInputs(MyMatrix m) {
 		inputs = m;
 		layers.get(0).setInputs(m);
 	}
 	
-	public void setExpectedResult(MyMatrix m) {
-		layers.get(0).setInputs(m);
+	public void setOutputs(MyMatrix m) {
+		expected_outputs = m;
+		layers.get(layers.size()-1).setOutputs(m);
 	}
+	
+	
 	
 	public MyMatrix getOutput() {
 		return layers.get(layers.size()-1).getOutputMatrix();
 	}
 	
-	private MyMatrix f(MyMatrix target) {
-		for (int i = 0; i < target.RowCount; i++) {
-			target.tarolo[i][0] = target.tarolo[i][0];
-		}
-		return target;
-	}
+	
 	
 }

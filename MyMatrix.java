@@ -17,6 +17,25 @@ public class MyMatrix {
 		}
 	}
 	
+	public MyMatrix scalarMultiplication(double scalar) {
+		MyMatrix A = this;
+		for (int i = 0; i < A.RowCount; i++) {
+			for (int j = 0; j < A.ColumnCount; j++) {
+				A.tarolo[i][j] = A.tarolo[i][j]*scalar;
+			}
+		}
+		return A;
+	}
+	
+	
+    public MyMatrix transpose() {
+    	MyMatrix A = new MyMatrix(ColumnCount, RowCount);
+        for (int i = 0; i < RowCount; i++)
+            for (int j = 0; j < ColumnCount; j++)
+                A.tarolo[j][i] = this.tarolo[i][j];
+        return A;
+    }
+	
 	
     public MyMatrix times(MyMatrix B) {
     	MyMatrix A = this;
