@@ -93,6 +93,8 @@ public class Layer {
 		
 		if (isOutput)
 			return output;
+		else if(isInput)
+			return output;
 		return f(output);
 		
 	}
@@ -195,7 +197,7 @@ public class Layer {
 		
 		if (isOutput)
 			return output2;
-		else if(melyseg == 0)
+		else if(melyseg == 0 || isInput)
 			return output2;
 		return f(output2);
 		

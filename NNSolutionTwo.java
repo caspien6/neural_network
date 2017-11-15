@@ -11,7 +11,8 @@ public class NNSolutionTwo {
 		ArrayList<Layer> layers = new ArrayList<Layer>();
 
 		String dimension = sc.nextLine();
-		//struktura beolvasása
+		
+		//struktura beolvasasa
 		String[] tmp = dimension.split(",");
 		ArrayList<Integer> lay_neurons = new ArrayList<Integer>();
 		for (int i = 0; i < tmp.length; i++) {
@@ -21,21 +22,33 @@ public class NNSolutionTwo {
 			else if(i == tmp.length-1) l.isOutput = true;
 			layers.add(l);
 		}
-		//Neuron adatok beolvasása soronkent
-		for (int i = 1; i < lay_neurons.size(); i++) {
-			MyMatrix layer_weights = new MyMatrix(lay_neurons.get(i), lay_neurons.get(i-1));
-			for (int j = 0; j < lay_neurons.get(i); j++) {
-				String[] neuron_params = sc.nextLine().split(",");
-				for (int k = 0; k < neuron_params.length; k++) {
-					if (k < neuron_params.length-1) {
-						layer_weights.tarolo[j][k] = Double.parseDouble(neuron_params[k]);
-					}
-					else {
-						layers.get(i).neurons.get(j).bias = Double.parseDouble(neuron_params[k]);
-					}
+		
+		
+		//Neuron adatok beolvasasa soronkent
+		for (int i = 0; i < lay_neurons.size(); i++) {
+			MyMatrix layer_weights;
+			if (i == 0) {
+				layer_weights = new MyMatrix(lay_neurons.get(i), lay_neurons.get(i));
+				for (int j = 0; j < layer_weights.RowCount; j++) {
+					layer_weights.tarolo[j][j] = 1;
 				}
-				
 			}
+			else {
+				layer_weights = new MyMatrix(lay_neurons.get(i), lay_neurons.get(i-1));
+				for (int j = 0; j < lay_neurons.get(i); j++) {
+					String[] neuron_params = sc.nextLine().split(",");
+					for (int k = 0; k < neuron_params.length; k++) {
+						if (k < neuron_params.length-1) {
+							layer_weights.tarolo[j][k] = Double.parseDouble(neuron_params[k]);
+						}
+						else {
+							layers.get(i).neurons.get(j).bias = Double.parseDouble(neuron_params[k]);
+						}
+					}
+					
+				}
+			}
+			
 			layers.get(i).initWeights(layer_weights);
 		}
 		
