@@ -80,9 +80,8 @@ public class Structure {
 		setOutputs(expected_out);
 		
 		//kiiras miatt
-		MyMatrix real_output = getOutput();
-		
-		real_output.show();
+		//MyMatrix real_output = getOutput();
+		//real_output.show();
 		for (int i = 1; i < layers.size(); i++) {
 			DerivateSolution layer_derivates = get_layout_derivates_witherror(i);
 			iterated_weights.add(layers.get(i).weights.minus(layer_derivates.derivateWeights.scalarMultiplication(mu)));
@@ -98,7 +97,7 @@ public class Structure {
 		iterated_biases.clear();
 		
 		//kiiras miatt
-		printData();
+		//printData();
 	}
 	
 	public double iterateOnce(MyMatrix inp, MyMatrix expected_out) {
@@ -108,12 +107,8 @@ public class Structure {
 		MyMatrix real_output = getOutput();
 		
 		MyMatrix tmp = expected_out.minus(real_output);
-		MyMatrix egysegerror = new MyMatrix(tmp.RowCount, tmp.RowCount);
-		for (int i = 0; i < tmp.RowCount; i++) {
-			egysegerror.tarolo[i][i] = tmp.tarolo[i][0]; 
-		}
 		
-		double avg = egysegerror.times(egysegerror).getAverage();
+		double avg = tmp.transpose().times(tmp).tarolo[0][0]/expected_out.RowCount;
 		return avg;
 	}
 	

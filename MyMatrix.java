@@ -25,7 +25,7 @@ public class MyMatrix {
 				avg += A.tarolo[i][j];
 			}
 		}
-		avg /= A.RowCount*A.ColumnCount;
+		avg /= A.RowCount;
 		return avg;
 	}
 	
