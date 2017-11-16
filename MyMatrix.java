@@ -17,6 +17,18 @@ public class MyMatrix {
 		}
 	}
 	
+	public double getAverage() {
+		MyMatrix A = this;
+		double avg = 0;
+		for (int i = 0; i < A.RowCount; i++) {
+			for (int j = 0; j < A.ColumnCount; j++) {
+				avg += A.tarolo[i][j];
+			}
+		}
+		avg /= A.RowCount*A.ColumnCount;
+		return avg;
+	}
+	
 	public MyMatrix scalarMultiplication(double scalar) {
 		MyMatrix A = this;
 		for (int i = 0; i < A.RowCount; i++) {

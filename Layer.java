@@ -61,6 +61,19 @@ public class Layer {
 			
 		}
 	}
+	public MyMatrix getBiases() {
+		MyMatrix biases = new MyMatrix(neurons.size(), 1);
+		for (int i = 0; i < neurons.size(); i++) {
+			biases.tarolo[i][0] = neurons.get(i).bias;
+		}
+		return biases;
+	}
+	
+	public void setBiases(MyMatrix b) {
+		for (int i = 0; i < neurons.size(); i++) {
+			neurons.get(i).bias = b.tarolo[i][0];
+		}
+	}
 	
 	public MyMatrix getOutputMatrix() {
 		MyMatrix output;
@@ -157,7 +170,7 @@ public class Layer {
 		
 	}
 	
-	public MyMatrix getError() {
+	private MyMatrix getError() {
 		if (this.isOutput) {
 			return expected_output.minus(this.getOutputMatrix());
 		}
@@ -203,16 +216,8 @@ public class Layer {
 		
 	}
 	
-	public MyMatrix getLayerDelta() {
-		if (isOutput) {
-			return getError().transpose();
-		}
-		else {
-			return after.getLayerDelta().times(after.weights).times(f_derivate(this.getSumMatrix(0)) );
-		}
-	}
 	
-	public MyMatrix getLayerDeltawithoutError() {
+	private MyMatrix getLayerDeltawithoutError() {
 		if (isOutput) {
 			MyMatrix m = new MyMatrix(1, 1);
 			m.tarolo[0][0] = 1;
@@ -223,11 +228,28 @@ public class Layer {
 		}
 	}
 	
+	private MyMatrix getLayerDeltawithError() {
+		if (isOutput) {
+			return getError().transpose();
+		}
+		else {
+			return after.getLayerDeltawithError().times(after.weights).times(f_derivate(this.getSumMatrix(0)) );
+		}
+	}
+	
 	public DerivateSolution getDerivates() {//error nelkuli itt nem kell a *-2
 		MyMatrix delta_transpose = getLayerDeltawithoutError().transpose();
 		DerivateSolution solution = new DerivateSolution();
 		solution.derivateWeights = delta_transpose.times(before.getOutputMatrix().transpose());//*-2
 		solution.derivateBiases = delta_transpose;//*-2
+		return solution;
+	}
+	
+	public DerivateSolution getDerivatesError() {//error-al
+		MyMatrix delta_transpose = getLayerDeltawithError().transpose();
+		DerivateSolution solution = new DerivateSolution();
+		solution.derivateWeights = delta_transpose.times(before.getOutputMatrix().transpose()).scalarMultiplication(-2);
+		solution.derivateBiases = delta_transpose.scalarMultiplication(-2);
 		return solution;
 	}
 	

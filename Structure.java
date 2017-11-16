@@ -5,6 +5,9 @@ import java.util.ArrayList;
 public class Structure {
 	ArrayList<Layer> layers;
 	MyMatrix inputs, expected_outputs;
+	private ArrayList<MyMatrix> iterated_weights = new ArrayList<MyMatrix>();
+	private ArrayList<MyMatrix> iterated_biases = new ArrayList<MyMatrix>();
+	public double mu = 0.1;
 	
 	public Structure(ArrayList<Layer> l) {
 		for (int i = 0; i < l.size(); i++) {
@@ -54,6 +57,10 @@ public class Structure {
 		return layers.get(index).getDerivates();
 	}
 	
+	public DerivateSolution get_layout_derivates_witherror(int index) {
+		return layers.get(index).getDerivatesError();
+	}
+	
 	public void setInputs(MyMatrix m) {
 		inputs = m;
 		layers.get(0).setInputs(m);
@@ -64,11 +71,55 @@ public class Structure {
 		layers.get(layers.size()-1).setOutputs(m);
 	}
 	
-	
-	
 	public MyMatrix getOutput() {
 		return layers.get(layers.size()-1).getOutputMatrix();
 	}
+	
+	public void iterateOnceLearn(MyMatrix inp, MyMatrix expected_out) {
+		setInputs(inp);
+		setOutputs(expected_out);
+		
+		//kiiras miatt
+		MyMatrix real_output = getOutput();
+		
+		real_output.show();
+		for (int i = 1; i < layers.size(); i++) {
+			DerivateSolution layer_derivates = get_layout_derivates_witherror(i);
+			iterated_weights.add(layers.get(i).weights.minus(layer_derivates.derivateWeights.scalarMultiplication(mu)));
+			iterated_biases.add(layers.get(i).getBiases().minus(layer_derivates.derivateBiases.scalarMultiplication(mu)));
+		}
+		
+		
+		for (int i = 1; i < layers.size(); i++) {
+			layers.get(i).weights = iterated_weights.get(i-1);
+			layers.get(i).setBiases(iterated_biases.get(i-1));
+		}
+		iterated_weights.clear();
+		iterated_biases.clear();
+		
+		//kiiras miatt
+		printData();
+	}
+	
+	public double iterateOnce(MyMatrix inp, MyMatrix expected_out) {
+		setInputs(inp);
+		setOutputs(expected_out);
+		
+		MyMatrix real_output = getOutput();
+		
+		MyMatrix tmp = expected_out.minus(real_output);
+		MyMatrix egysegerror = new MyMatrix(tmp.RowCount, tmp.RowCount);
+		for (int i = 0; i < tmp.RowCount; i++) {
+			egysegerror.tarolo[i][i] = tmp.tarolo[i][0]; 
+		}
+		
+		double avg = egysegerror.times(egysegerror).getAverage();
+		return avg;
+	}
+	
+	
+	
+	
 	
 	
 	
