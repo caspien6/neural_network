@@ -83,7 +83,7 @@ public class NNSolutionFour {
 				validate_patterns.add(iomatrix);
 			}
 		}
-		
+		//------
 		for (int i = 0; i < epoch; i++) {
 			for (int j = 0; j < teaching_patterns.size(); j++) {
 				st.iterateOnceLearn(teaching_patterns.get(j).inputMatrix, teaching_patterns.get(j).expectedOutputMatrix);

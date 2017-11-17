@@ -1,5 +1,6 @@
 package main;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -61,6 +62,17 @@ public class Layer {
 			
 		}
 	}
+	
+	public void printWeightsAndBiases(PrintWriter writer) {
+		for (int i = 0; i < weights.RowCount; i++) {
+			for (int j = 0; j < weights.ColumnCount; j++) {
+				writer.print(weights.tarolo[i][j] + ",");
+			}
+			writer.println(neurons.get(i).bias);
+			
+		}
+	}
+	
 	public MyMatrix getBiases() {
 		MyMatrix biases = new MyMatrix(neurons.size(), 1);
 		for (int i = 0; i < neurons.size(); i++) {
